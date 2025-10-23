@@ -6,11 +6,13 @@ dotenv.config();
 
 const GITHUB_URL: string = "https://api.github.com";
 
-export async function getCommits(org: string, repoId: string, page: string, perPage: string): Promise<Commit[]> {
-    return await getRequest(`/repos/${org}/${repoId}/commits`, { params: { per_page: perPage, page } })
+export async function getCommits(org: string, repoId: string, page: number, perPage: number): Promise<Commit[]> {
+    console.debug(`Get commits - org: ${org} repo: ${repoId} page: ${page}`)
+    return await getRequest(`/repos/${org}/${repoId}/commits`, { per_page: perPage, page })
 }
 
 export async function getCommitDiff(org: string, repoId: string, sha: string): Promise<CommitFile[]> {
+    console.debug(`getCommitDiff - org ${org} repo ${repoId} sha ${sha}`)
     const data = await getRequest<{ files: CommitFile[] }>(
         `/repos/${org}/${repoId}/commits/${sha}`
     );
@@ -28,7 +30,7 @@ async function handleRateLimit(headers: any): Promise<void> {
     }
 }
 
-async function getRequest(path: string, params: Record<string, any>): Promise<any> {
+async function getRequest(path: string, params: Record<string, any> = {}): Promise<any> {
     const token = process.env.GH_TOKEN;
     const headers = { Authorization: `Bearer ${token}`,
                       Accept: "application/vnd.github.v3+json",
@@ -36,7 +38,7 @@ async function getRequest(path: string, params: Record<string, any>): Promise<an
     const url = `${GITHUB_URL}${path}`;
 
     try {
-        const res: AxiosResponse<T> = await axios.get(url, { headers, params });
+        const res: AxiosResponse = await axios.get(url, { headers, params });
         await handleRateLimit(res.headers);
         return res.data;
     } catch (error: any) {
