@@ -41,7 +41,7 @@ MONGO_URI=mongodb://localhost:27017/keys-scanner
 Scan a repository by providing the owner and repo name:
 
 ```bash
-npm run dev owner/repo
+npm run scan owner/repo
 ```
 
 ## How It Works

@@ -1,1 +1,1 @@
-console.debug("Test 3!")
+console.debug("Test key: AKIA123456EXAMPLEKEY")
