@@ -25,7 +25,7 @@ async function handleRateLimit(headers: any): Promise<void> {
 
     if (remaining === 0 && reset) {
         const waitMs = Math.max(reset * 1000 - Date.now(), 0);
-        console.log(`⏳ Rate limit reached. Waiting ${(waitMs / 1000).toFixed(1)}s...`);
+        console.log(`Rate limit reached. Waiting ${(waitMs / 1000).toFixed(1)}s...`);
         await new Promise((resolve) => setTimeout(resolve, waitMs));
     }
 }
